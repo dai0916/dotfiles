@@ -1,0 +1,45 @@
+# Ghostty configuration
+
+# テーマ
+theme = Catppuccin Mocha
+#theme = dracula
+
+# 見た目系（これ入れるだけで一気にモダンになる）
+background-opacity = 0.3
+window-padding-x = 10
+window-padding-y = 10
+
+# フォント（デフォルトのJetBrains Monoでもいいけど…）
+#font-family = "LINE Seed JP"
+#font-family = "JetBrains Mono"
+#font-family = "0xProto Nerd Font Mono"
+#font-family = "BlexMono Nerd Font Mono"
+#font-family = Menlo
+# 日本語対応おすすめ
+#font-family = "Cica"
+font-family = "HackGen Console NF"
+#font-family = "UDEV Gothic NF"
+#font-family = "PlemolJP Console NF"
+#font-family = "FirgeNerd Console"
+#font-family = "MoralerspaceNeon"   # 他: Argon / Krypton / Radon / Xenon
+
+font-size = 21
+font-thicken = true
+
+font-feature = -calt,-dlig
+adjust-cell-height = 5
+
+# macOSっぽさ・使い勝手
+macos-titlebar-style = hidden
+macos-non-native-fullscreen = true
+mouse-hide-while-typing = true
+cursor-style = block
+cursor-click-to-move = true
+
+# readline カーソル操作キーを Ghostty に横取りさせない
+keybind = ctrl+a=unbind
+keybind = ctrl+b=unbind
+keybind = ctrl+e=unbind
+keybind = ctrl+f=unbind
+keybind = ctrl+n=unbind
+keybind = ctrl+p=unbind
