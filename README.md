@@ -74,7 +74,6 @@ cd ~/dotfiles
 - フォント: HackGen Console NF (size 21)
 - 背景透過: 30%
 - タイトルバー非表示
-- Ctrl+A/B/E/F/N/P を unbind（readline カーソル操作との競合回避）
 
 ## Karabiner-Elements
 
@@ -93,6 +92,7 @@ Nerd Font アイコンを使用したプロンプト。表示内容：
 
 | フォント | 特徴 |
 |----------|------|
+| LINE Seed JP | LINE 公式の日本語対応フォント |
 | Cica | 日本語対応コーディングフォント |
 | HackGen Nerd | Hack + 源柔ゴシック + Nerd Font |
 | FirgeNerd | Fira Code + 源真ゴシック + Nerd Font |
@@ -119,14 +119,10 @@ Nerd Font アイコンを使用したプロンプト。表示内容：
 | Ghostty | ターミナルエミュレータ |
 | Google Chrome | ブラウザ |
 | Google 日本語入力 | IME |
-| Heptabase | ビジュアルノート |
 | Karabiner-Elements | キーボードカスタマイズ |
-| Notion | ドキュメント |
 | Obsidian | ナレッジベース |
 | Raycast | ランチャー |
-| Slack | コミュニケーション |
 | Visual Studio Code | エディタ |
 | VLC | メディアプレイヤー |
-| Warp | ターミナルエミュレータ |
 
 </details>
