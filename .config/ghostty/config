@@ -35,11 +35,3 @@ macos-non-native-fullscreen = true
 mouse-hide-while-typing = true
 cursor-style = block
 cursor-click-to-move = true
-
-# readline カーソル操作キーを Ghostty に横取りさせない
-keybind = ctrl+a=unbind
-keybind = ctrl+b=unbind
-keybind = ctrl+e=unbind
-keybind = ctrl+f=unbind
-keybind = ctrl+n=unbind
-keybind = ctrl+p=unbind

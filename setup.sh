@@ -40,6 +40,7 @@ brew install --cask \
   cursor \
   discord \
   font-cica \
+  font-line-seed-jp \
   font-firgenerd \
   font-hackgen-nerd \
   font-moralerspace \
@@ -48,15 +49,11 @@ brew install --cask \
   ghostty \
   google-chrome \
   google-japanese-ime \
-  heptabase \
   karabiner-elements \
-  notion \
   obsidian \
   raycast \
-  slack \
   visual-studio-code \
-  vlc \
-  warp
+  vlc
 
 echo "==> Linking dotfiles..."
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
