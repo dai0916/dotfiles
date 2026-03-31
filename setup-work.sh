@@ -9,6 +9,7 @@ fi
 
 echo "==> Installing Homebrew packages..."
 brew install \
+  delta \
   direnv \
   eza \
   bat \
@@ -18,6 +19,8 @@ brew install \
   gh \
   go \
   imagemagick \
+  jq \
+  lazygit \
   node@22 \
   pnpm \
   ripgrep \
@@ -27,33 +30,6 @@ brew install \
   unar \
   uv \
   zoxide
-
-echo "==> Installing Homebrew casks..."
-brew install --cask \
-  1password \
-  appcleaner \
-  bettertouchtool \
-  claude \
-  cleanshot \
-  cmux \
-  coteditor \
-  cursor \
-  discord \
-  font-cica \
-  font-line-seed-jp \
-  font-firgenerd \
-  font-hackgen-nerd \
-  font-moralerspace \
-  font-plemol-jp-nf \
-  font-udev-gothic-nf \
-  ghostty \
-  google-chrome \
-  google-japanese-ime \
-  karabiner-elements \
-  obsidian \
-  raycast \
-  visual-studio-code \
-  vlc
 
 echo "==> Linking dotfiles..."
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
