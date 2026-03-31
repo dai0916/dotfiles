@@ -139,12 +139,7 @@ export LANG=ja_JP.UTF-8
 # fnm - fast Node.js version manager
 eval "$(fnm env --use-on-cd)"
 
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
 export PATH="$HOME/go/bin:$PATH"
-
-# eval "$(mise activate zsh)"
-
-# Added by Antigravity
 
 # Added for node
 export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
