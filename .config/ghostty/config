@@ -10,18 +10,21 @@ window-padding-x = 10
 window-padding-y = 10
 
 # フォント（デフォルトのJetBrains Monoでもいいけど…）
-#font-family = "LINE Seed JP"
+font-family = "JetBrainsMono Nerd Font"
+font-family = "LINE Seed JP"
 #font-family = "JetBrains Mono"
 #font-family = "0xProto Nerd Font Mono"
 #font-family = "BlexMono Nerd Font Mono"
 #font-family = Menlo
 # 日本語対応おすすめ
 #font-family = "Cica"
-font-family = "HackGen Console NF"
+#font-family = "PlemolJP Console NF"
 #font-family = "UDEV Gothic NF"
+#font-family = "Source Han Code JP"
+#font-family = "MoralerspaceNeon"
 #font-family = "PlemolJP Console NF"
 #font-family = "FirgeNerd Console"
-#font-family = "MoralerspaceNeon"   # 他: Argon / Krypton / Radon / Xenon
+#font-family = "MoralerspaceKrypton"   # 他: Neon / Argon / Radon / Xenon
 
 font-size = 21
 font-thicken = true
