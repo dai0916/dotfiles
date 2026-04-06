@@ -43,6 +43,7 @@ brew install --cask \
   font-line-seed-jp \
   font-firgenerd \
   font-hackgen-nerd \
+  font-jetbrains-mono-nerd-font \
   font-moralerspace \
   font-plemol-jp-nf \
   font-udev-gothic-nf \
