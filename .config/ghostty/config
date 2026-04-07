@@ -4,12 +4,12 @@
 theme = Catppuccin Mocha
 #theme = dracula
 
-# 見た目系（これ入れるだけで一気にモダンになる）
-background-opacity = 0.3
+# 見た目系
+background-opacity = 0.5
 window-padding-x = 10
 window-padding-y = 10
 
-# フォント（デフォルトのJetBrains Monoでもいいけど…）
+# フォント
 font-family = "JetBrainsMono Nerd Font"
 font-family = "LINE Seed JP"
 #font-family = "JetBrains Mono"
@@ -30,7 +30,7 @@ font-size = 21
 font-thicken = false
 
 font-feature = -calt,-dlig
-adjust-cell-height = 5
+adjust-cell-height = 1.5
 
 # macOSっぽさ・使い勝手
 macos-titlebar-style = hidden
