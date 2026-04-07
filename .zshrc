@@ -161,3 +161,4 @@ alias cat="bat --paging=never"
 
 # Starship prompt (must be at end)
 eval "$(starship init zsh)"
+export PATH="$HOME/.local/bin:$PATH"

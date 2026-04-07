@@ -27,7 +27,7 @@ font-family = "LINE Seed JP"
 #font-family = "MoralerspaceKrypton"   # 他: Neon / Argon / Radon / Xenon
 
 font-size = 21
-font-thicken = true
+font-thicken = false
 
 font-feature = -calt,-dlig
 adjust-cell-height = 5
