@@ -74,6 +74,15 @@ ln -sf "$DOTFILES_DIR/.zimrc" ~/.zimrc
 mkdir -p ~/.config
 ln -sf "$DOTFILES_DIR/.config/starship.toml" ~/.config/starship.toml
 
+# git global ignore
+mkdir -p ~/.config/git
+ln -sf "$DOTFILES_DIR/.config/git/ignore" ~/.config/git/ignore
+
+# Claude Code settings
+mkdir -p ~/.claude
+ln -sf "$DOTFILES_DIR/.claude/settings.json" ~/.claude/settings.json
+ln -sf "$DOTFILES_DIR/.claude/statusline-command.sh" ~/.claude/statusline-command.sh
+
 # Ghostty config
 if [ -d "$DOTFILES_DIR/.config/ghostty" ]; then
   mkdir -p ~/.config/ghostty
@@ -104,4 +113,32 @@ eval "$(fnm env)"
 fnm install 22
 fnm default 22
 
+echo "==> Configuring macOS system settings..."
+# Dock
+defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock magnification -bool true
+defaults write com.apple.dock tilesize -int 88
+# Finder
+defaults write com.apple.finder ShowPathbar -bool true
+defaults write com.apple.finder ShowStatusBar -bool true
+defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
+# Keyboard repeat
+defaults write NSGlobalDomain KeyRepeat -int 2
+defaults write NSGlobalDomain InitialKeyRepeat -int 15
+# Trackpad: tap to click
+defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+# Apply Dock changes
+killall Dock 2>/dev/null || true
+killall Finder 2>/dev/null || true
+
 echo "==> Done! Restart your terminal."
+echo ""
+echo "==> 手動で必要な設定:"
+echo "  1. git user 設定:"
+echo "       git config --global user.name '名前'"
+echo "       git config --global user.email 'メールアドレス'"
+echo "  2. GitHub 認証: gh auth login"
+echo "  3. gcloud 認証: gcloud auth login"
+echo "  4. SSH 鍵: ssh-keygen -t ed25519 -C 'your@email.com'"
+echo "  5. Karabiner / BetterTouchTool: システム設定でアクセシビリティを許可"

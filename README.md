@@ -1,36 +1,95 @@
 # dotfiles
 
-macOS (Apple Silicon) の開発環境を再現するための dotfiles。
+macOS (Apple Silicon) 仕事用開発環境を再現するための dotfiles。
 
 ## セットアップ
 
 ```bash
-git clone https://github.com/dai0916/dotfiles.git ~/dotfiles
-cd ~/dotfiles
-./setup.sh
+git clone https://github.com/dai0916/dotfiles.git ~/work/dotfiles
+cd ~/work/dotfiles
+./setup-work.sh
 ```
 
-`setup.sh` が以下を自動で行う：
+`setup-work.sh` が以下を自動で行う：
 
 1. Homebrew のインストール（未導入の場合）
-2. CLI ツール・GUI アプリのインストール
-3. 設定ファイルのシンボリックリンク作成
-4. Zim フレームワークのインストール
-5. Node.js (v22) のインストール（fnm 経由）
+2. CLI ツールのインストール
+3. GUI アプリのインストール
+4. 設定ファイルのシンボリックリンク作成
+5. Zim フレームワークのインストール
+6. Node.js (v22) のインストール（fnm 経由）
+7. macOS システム設定（Dock・Finder・キーボード・トラックパッド）
+
+## セットアップ後の手動手順
+
+スクリプトでは自動化できない設定を手動で行う。
+
+### 1. git ユーザー設定
+
+```bash
+git config --global user.name "名前"
+git config --global user.email "メールアドレス"
+```
+
+### 2. GitHub 認証
+
+```bash
+gh auth login
+```
+
+複数アカウントを使う場合は繰り返す。
+
+### 3. gcloud 認証
+
+```bash
+gcloud auth login
+gcloud config set project <PROJECT_ID>
+```
+
+### 4. SSH 鍵の生成
+
+```bash
+ssh-keygen -t ed25519 -C "your@email.com"
+# 公開鍵を GitHub に登録
+cat ~/.ssh/id_ed25519.pub | pbcopy
+```
+
+### 5. アプリの許可設定
+
+- **Karabiner-Elements**: システム設定 → プライバシーとセキュリティ → アクセシビリティで許可
+- **BetterTouchTool**: 同上 + ライセンス認証が必要
+- **Raycast**: システム設定 → プライバシーとセキュリティ → アクセシビリティで許可
 
 ## 構成
 
 ```
-~/dotfiles/
-├── .zshrc                    # シェル設定（メイン）
-├── .zprofile                 # ログインシェル設定（Homebrew shellenv）
-├── .zimrc                    # Zim プラグインマネージャ設定
+~/work/dotfiles/
+├── .zshrc                         # シェル設定（メイン）
+├── .zprofile                      # ログインシェル設定（Homebrew shellenv）
+├── .zimrc                         # Zim プラグインマネージャ設定
+├── .vimrc                         # Vim 設定
 ├── .config/
-│   ├── starship.toml         # Starship プロンプト設定
-│   ├── ghostty/config        # Ghostty ターミナル設定
-│   └── karabiner/            # Karabiner-Elements 設定
-└── setup.sh                  # 環境構築スクリプト
+│   ├── starship.toml              # Starship プロンプト設定
+│   ├── ghostty/config             # Ghostty ターミナル設定
+│   ├── karabiner/karabiner.json   # Karabiner-Elements 設定
+│   ├── bettertouchtool/           # BetterTouchTool プリセット
+│   └── git/ignore                 # グローバル .gitignore
+├── .claude/
+│   ├── settings.json              # Claude Code 設定
+│   └── statusline-command.sh      # Claude Code ステータスライン
+├── setup-work.sh                  # 仕事用環境構築スクリプト
+└── setup.sh                       # 個人用環境構築スクリプト
 ```
+
+## 再現できないもの（手動対応）
+
+| 項目 | 理由 |
+|------|------|
+| SSH 鍵 | セキュリティ上 dotfiles に含めない |
+| gh / gcloud 認証トークン | 同上 |
+| Raycast 設定・拡張機能 | `~/.config/raycast/` は dotfiles 未管理 |
+| Arc / Warp の設定 | サインインで同期される |
+| cmux 設定 | `~/.config/cmux/` は dotfiles 未管理 |
 
 ## シェル環境
 
@@ -67,38 +126,41 @@ cd ~/dotfiles
 | [gh](https://cli.github.com/) | GitHub CLI |
 | [pnpm](https://pnpm.io/) | Node.js パッケージマネージャ |
 | [supabase](https://supabase.com/docs/guides/cli) | Supabase CLI |
+| [ffmpeg](https://ffmpeg.org/) | 動画・音声処理 |
+| [keeper-commander](https://github.com/Keeper-Security/Commander) | Keeper パスワードマネージャー CLI |
+| [safe-rm](https://github.com/kaelzhang/shell-safe-rm) | 安全な rm |
 
 ## Ghostty ターミナル設定
 
 - テーマ: Catppuccin Mocha
-- フォント: HackGen Console NF (size 21)
-- 背景透過: 30%
+- フォント: JetBrains Mono Nerd Font + LINE Seed JP (size 21)
+- 背景透過: 50%
 - タイトルバー非表示
 
 ## Karabiner-Elements
 
-キーボードカスタマイズ設定。詳細は `.config/karabiner/karabiner.json` を参照。
-
-## Starship プロンプト
-
-Nerd Font アイコンを使用したプロンプト。表示内容：
-
-- カレントディレクトリ（リポジトリルートから3階層）
-- Git ブランチ・ステータス
-- Node.js / Go / Python / Rust バージョン（プロジェクト検出時のみ）
-- コマンド実行時間（3秒以上の場合）
+| ルール | 内容 |
+|--------|------|
+| Ctrl+p/n → ↑/↓ | 矢印キーをホームポジションから操作 |
+| Ctrl+[W/T/C/V/X/Z/Q/R/S] → Cmd+同キー | Warp・Raycast・Ghostty・cmux 以外で有効 |
+| Cmd 単押し → 英数/かなトグル | 左右どちらの Cmd でも動作 |
 
 ## インストールされるフォント
 
 | フォント | 特徴 |
 |----------|------|
-| LINE Seed JP | LINE 公式の日本語対応フォント |
+| JetBrains Mono Nerd Font | メインフォント（英数字） |
+| LINE Seed JP | 日本語フォント |
+| 0xProto Nerd Font | プログラミング向けフォント |
+| BlexMono Nerd Font | IBM Plex Mono ベース |
 | Cica | 日本語対応コーディングフォント |
 | HackGen Nerd | Hack + 源柔ゴシック + Nerd Font |
 | FirgeNerd | Fira Code + 源真ゴシック + Nerd Font |
 | Moralerspace | 等幅プログラミングフォント |
 | PlemolJP NF | IBM Plex Mono + IBM Plex Sans JP + Nerd Font |
 | UDEV Gothic NF | UDEV Gothic + Nerd Font |
+| SF Mono for Powerline | Apple SF Mono の Powerline 版 |
+| Source Han Code JP | 源ノ等幅 |
 
 ## インストールされる GUI アプリ
 
@@ -107,22 +169,19 @@ Nerd Font アイコンを使用したプロンプト。表示内容：
 
 | アプリ | カテゴリ |
 |--------|---------|
-| 1Password | パスワード管理 |
-| AppCleaner | アプリ削除 |
-| BetterTouchTool | 入力カスタマイズ |
-| Claude | AI アシスタント |
+| Arc | ブラウザ |
+| Aqua Voice | 音声入力 |
+| BetterTouchTool | 入力カスタマイズ（※要ライセンス） |
 | CleanShot | スクリーンショット |
 | cmux | Claude Code ターミナル |
-| CotEditor | テキストエディタ |
-| Cursor | AI エディタ |
-| Discord | コミュニケーション |
 | Ghostty | ターミナルエミュレータ |
-| Google Chrome | ブラウザ |
 | Google 日本語入力 | IME |
+| Google Cloud CLI | Google Cloud SDK |
 | Karabiner-Elements | キーボードカスタマイズ |
-| Obsidian | ナレッジベース |
-| Raycast | ランチャー |
-| Visual Studio Code | エディタ |
-| VLC | メディアプレイヤー |
+| KeepingYouAwake | スリープ防止 |
+| Logitech G HUB | Logicool デバイス設定 |
+| SmoothCSV | CSV エディタ |
+| Warp | AI ターミナル |
+| XMind | マインドマップ |
 
 </details>
