@@ -81,6 +81,20 @@ cat ~/.ssh/id_ed25519.pub | pbcopy
 └── setup.sh                       # 個人用環境構築スクリプト
 ```
 
+## 自動設定される macOS システム設定
+
+| 設定 | 値 |
+|------|-----|
+| Dock 自動非表示 | 有効 |
+| Dock サイズ | 88px |
+| Dock 拡大 | 有効 |
+| Finder パスバー | 表示 |
+| Finder ステータスバー | 表示 |
+| Finder デフォルトビュー | リスト表示 |
+| キーリピート速度 | 2（最速に近い） |
+| キーリピート開始までの時間 | 15 |
+| トラックパッド タップでクリック | 有効 |
+
 ## 再現できないもの（手動対応）
 
 | 項目 | 理由 |
@@ -90,6 +104,7 @@ cat ~/.ssh/id_ed25519.pub | pbcopy
 | Raycast 設定・拡張機能 | `~/.config/raycast/` は dotfiles 未管理 |
 | Arc / Warp の設定 | サインインで同期される |
 | cmux 設定 | `~/.config/cmux/` は dotfiles 未管理 |
+| BetterTouchTool 本体 | cask 未管理のため別途インストールが必要（プリセットは dotfiles で管理） |
 
 ## シェル環境
 
@@ -171,7 +186,6 @@ cat ~/.ssh/id_ed25519.pub | pbcopy
 |--------|---------|
 | Arc | ブラウザ |
 | Aqua Voice | 音声入力 |
-| BetterTouchTool | 入力カスタマイズ（※要ライセンス） |
 | CleanShot | スクリーンショット |
 | cmux | Claude Code ターミナル |
 | Ghostty | ターミナルエミュレータ |
@@ -183,5 +197,7 @@ cat ~/.ssh/id_ed25519.pub | pbcopy
 | SmoothCSV | CSV エディタ |
 | Warp | AI ターミナル |
 | XMind | マインドマップ |
+
+※ BetterTouchTool は別途インストールが必要。プリセット（`.config/bettertouchtool/Default.bttpreset`）は dotfiles で管理。
 
 </details>
