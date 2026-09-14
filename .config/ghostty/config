@@ -27,10 +27,10 @@ font-family = "LINE Seed JP"
 #font-family = "MoralerspaceKrypton"   # 他: Neon / Argon / Radon / Xenon
 
 font-size = 21
-font-thicken = false
+font-thicken = true
 
 font-feature = -calt,-dlig
-adjust-cell-height = 1.5
+adjust-cell-height = 0%
 
 # macOSっぽさ・使い勝手
 macos-titlebar-style = hidden
