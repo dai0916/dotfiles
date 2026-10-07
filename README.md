@@ -74,12 +74,55 @@ cat ~/.ssh/id_ed25519.pub | pbcopy
 │   ├── karabiner/karabiner.json   # Karabiner-Elements 設定
 │   ├── bettertouchtool/           # BetterTouchTool プリセット
 │   └── git/ignore                 # グローバル .gitignore
-├── .claude/
-│   ├── settings.json              # Claude Code 設定
-│   └── statusline-command.sh      # Claude Code ステータスライン
+├── .claude/                       # Claude Code（~/.claude へ配置）
+│   ├── settings.base.json         # settings.json に足し込むひな形
+│   ├── statusline.sh              # ステータスライン
+│   ├── agents/                    # サブエージェント（investigator / routine）
+│   ├── hooks/japanese-guard.py    # 英語の回答を日本語で書き直させる Stop フック
+│   ├── commands/gh.md             # /gh（GitHub Issue 操作）
+│   └── skills/ui-review/          # Playwright で UI をレビューするスキル
+├── .codex/                        # Codex（~/.codex へ配置）
+│   ├── AGENTS.md                  # グローバル指示（モデルの使い分け・クロスレビュー）
+│   ├── config.base.toml           # config.toml のひな形（無いときだけ書き出す）
+│   ├── agents/                    # サブエージェント
+│   ├── hooks/japanese-guard.py    # Claude 版と同じフックの Codex 版
+│   └── skills/search-router/      # Web 検索の手段を選ぶスキル
+├── agent-skills/done/             # /done（Claude Code と Codex の両方に配置）
+├── setup-agents.sh                # Claude Code / Codex の設定を配置（setup-work.sh から呼ぶ）
+├── NOTICE                         # 第三者のソフトウェアの出典（japanese-guard）
 ├── setup-work.sh                  # 仕事用環境構築スクリプト
 └── setup.sh                       # 個人用環境構築スクリプト
 ```
+
+## AI エージェント（Claude Code / Codex / Orca）
+
+Orca で issue ごとにワークツリーを開き、Claude Code と Codex を併用する環境。
+`setup-agents.sh`（`setup-work.sh` から呼ばれる。単体で何度実行してもよい）が次を行う：
+
+- エージェント・フック・スキル・`AGENTS.md` を `~/.claude` / `~/.codex` にシンボリックリンクする（既存の実体は `.bak-<日時>` に退避）
+- `~/.claude/settings.json` に `settings.base.json` を足し込む。Orca やアプリが書き込むファイルなのでリンクにはしない。既存のキーとフックは残す
+- `~/.codex/config.toml` が無ければ `config.base.toml` から作る（あれば触らない）
+- `~/.codex/hooks.json` の Stop に `japanese-guard.py` を足す
+
+ここに入れているのはどの PJ でも使える設定だけ。PJ 固有のルールとフックは、各リポジトリの `.claude/settings.json` と `AGENTS.md` で配る。
+
+### issue の流れ
+
+1 issue = 1 ワークツリー = 1 ブランチ。
+
+1. 着手：Orca のタスク一覧から issue のワークツリーを開く（エージェントに issue が渡される）→ 計画の承認 → 実装・検証
+2. 出荷：確認 OK なら同じワークツリーで `/done`（`agent-skills/done`）。commit 前の別系統レビュー → PJ の `AGENTS.md`「出荷手順」節 → issue を close → ブランチとワークツリーを削除
+   - PR のマージを他の人が行う PJ では、`/done` は PR を出して止まる。マージ後にもう一度 `/done` で close と片付け（squash マージでも出荷済みと判定する）
+   - 各 PJ の `AGENTS.md` に「出荷手順」節（確認 / 出荷 / 片付け）を書いておくと、`/done` がそのとおりに進める
+承認なしで進める設定（Claude の `skipDangerousModePermissionPrompt`、Codex の `approval_policy = "never"`）と Codex の memories は既定で入れていない。環境の方針に合わせて手で有効にする。
+
+セットアップ後の手順：
+
+1. `claude` を起動して `/login`、`codex login`
+2. Claude Code で `/codex:setup` を実行し、Codex との連携を確かめる
+3. Codex を初めて起動したら、`japanese-guard.py` のフックを信頼する
+4. Orca でリポジトリを登録し、setup を `pnpm install` にして `wait-for-setup` を有効にする
+5. Orca から Claude と Codex を一度起動する（Orca が自分のフックを settings.json / hooks.json に書き込む）
 
 ## 自動設定される macOS システム設定
 

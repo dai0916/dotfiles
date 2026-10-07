@@ -1,0 +1,36 @@
+# Codex のグローバル設定のひな形。setup-agents.sh が ~/.codex/config.toml の無いときだけ書き出す（__HOME__ は $HOME に置き換える）。
+# 書き出したあとは Codex / ChatGPT.app / Orca が追記するので、このファイルとリンクはしない。
+model = "gpt-6.1-sol"
+model_reasoning_effort = "medium"
+
+# 確認なしで進めたいなら approval_policy = "never" にする（会社のセキュリティ方針を確かめてから）
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+
+[sandbox_workspace_write]
+# git worktree は本体の .git に書き込むので、リポジトリと Orca のワークツリーを置く場所を許可する
+writable_roots = ["__HOME__/work", "__HOME__/orca"]
+network_access = true
+
+[features]
+multi_agent = true
+# 会話から自動で記録を残す。会社のデータの扱いで問題なければ true にする
+memories = false
+
+[mcp_servers.playwright]
+command = "npx"
+args = ["@playwright/mcp@latest"]
+
+[marketplaces.openai-codex]
+source_type = "git"
+source = "https://github.com/openai/codex-plugin-cc.git"
+
+[marketplaces.claude-plugins-official]
+source_type = "git"
+source = "https://github.com/anthropics/claude-plugins-official.git"
+
+[plugins."codex@openai-codex"]
+enabled = true
+
+[plugins."browser-use@claude-plugins-official"]
+enabled = true

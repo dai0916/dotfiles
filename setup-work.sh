@@ -41,6 +41,7 @@ brew install --cask \
   arc \
   cleanshot \
   cmux \
+  codex \
   font-0xproto-nerd-font \
   font-blex-mono-nerd-font \
   font-cica \
@@ -63,6 +64,9 @@ brew install --cask \
   warp \
   xmind
 
+# Orca（AI エージェントのワークツリー管理）。Homebrew 本体の orca は別のアプリなので tap から入れる
+brew install --cask stablyai/orca/orca
+
 echo "==> Linking dotfiles..."
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 
@@ -78,10 +82,8 @@ ln -sf "$DOTFILES_DIR/.config/starship.toml" ~/.config/starship.toml
 mkdir -p ~/.config/git
 ln -sf "$DOTFILES_DIR/.config/git/ignore" ~/.config/git/ignore
 
-# Claude Code settings
-mkdir -p ~/.claude
-ln -sf "$DOTFILES_DIR/.claude/settings.json" ~/.claude/settings.json
-ln -sf "$DOTFILES_DIR/.claude/statusline-command.sh" ~/.claude/statusline-command.sh
+# Claude Code / Codex の設定（settings.json などは足し込み。詳しくは setup-agents.sh）
+"$DOTFILES_DIR/setup-agents.sh"
 
 # Ghostty config
 if [ -d "$DOTFILES_DIR/.config/ghostty" ]; then
@@ -141,4 +143,6 @@ echo "       git config --global user.email 'メールアドレス'"
 echo "  2. GitHub 認証: gh auth login"
 echo "  3. gcloud 認証: gcloud auth login"
 echo "  4. SSH 鍵: ssh-keygen -t ed25519 -C 'your@email.com'"
-echo "  5. Karabiner / BetterTouchTool: システム設定でアクセシビリティを許可"
+echo "  5. Claude Code / Codex: claude で /login、codex login、Claude Code で /codex:setup"
+echo "  6. Orca: リポジトリを登録し、setup を pnpm install（wait-for-setup を有効）にする"
+echo "  7. Karabiner / BetterTouchTool: システム設定でアクセシビリティを許可"

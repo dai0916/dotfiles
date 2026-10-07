@@ -1,0 +1,9 @@
+このリポジトリには、次のソフトウェアを元にしたファイルが含まれる。
+
+claude-code-japanese-guard
+Copyright 2026 Minoru Onda
+https://github.com/minorun365/claude-code-japanese-guard
+Licensed under the Apache License, Version 2.0（全文は THIRD_PARTY_LICENSE-Apache-2.0.txt）
+
+- .claude/hooks/japanese-guard.py … コミット 930f056 の hooks/japanese-guard.py をそのまま収録
+- .codex/hooks/japanese-guard.py … 上記を元に Codex の Stop hook 向けに書き直したもの（判定の基準と環境変数は同じ）
