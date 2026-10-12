@@ -38,6 +38,7 @@ op signin            # 1Password CLI
 ```
 
 - Karabiner-Elements・Raycast・Mos などに、システム設定 → プライバシーとセキュリティ → アクセシビリティで許可を出す
+- Raycast の Settings → Extensions → Script Commands → Add Directories で `~/dotfiles/raycast/script-commands` を登録する
 - 仕事用: `gcloud auth login`
 
 ## 構成
@@ -59,6 +60,7 @@ op signin            # 1Password CLI
 │   ├── karabiner/karabiner.json
 │   ├── bettertouchtool/    # BetterTouchTool を手で入れた端末でだけリンク
 │   └── git/ignore
+├── raycast/script-commands/        # Raycast の Script Commands（Raycast にフォルダを登録して使う）
 ├── .claude/ .codex/ agent-skills/   # AI エージェントの設定（下を参照）
 └── NOTICE                  # 第三者のソフトウェアの出典（japanese-guard）
 ```
@@ -119,3 +121,9 @@ Orca で issue ごとにワークツリーを開き、Claude Code と Codex を�
 | Ctrl+p/n → ↑/↓ | 矢印キーをホームポジションから操作 |
 | Ctrl+[W/T/C/V/X/Z/Q/R/S] → Cmd+同キー | Warp・Raycast・Ghostty・cmux 以外で有効 |
 | Cmd 単押し → 英数/かなトグル | 左右どちらの Cmd でも動作 |
+
+## Raycast Script Commands（`raycast/script-commands/`）
+
+| スクリプト | 内容 |
+|---|---|
+| restart-stream-deck.sh | Stream Deck を再起動し、開いたウィンドウを閉じる |
