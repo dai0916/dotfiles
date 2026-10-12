@@ -107,6 +107,13 @@ if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZIM_CONFIG_FILE:-${ZDOTDIR:-${HOME}}/.zimrc} 
 fi
 # Initialize modules.
 source ${ZIM_HOME}/init.zsh
+# Orca のターミナルでは、Zim input が zle-line-init を包む時点で Orca の一時ウィジェット
+# (__orca_deferred_line_init) を焼き込み、後で関数が消えて毎プロンプト command not found になる。
+# 関数が残っているときだけ呼ぶように差し替える
+if [[ ${functions[_start_application_mode]-} == *__orca_deferred_line_init* ]]; then
+  functions[_start_application_mode]='(( ${+functions[__orca_deferred_line_init]} )) && __orca_deferred_line_init "$@"
+echoti smkx'
+fi
 # }}} End configuration added by Zim Framework install
 
 
