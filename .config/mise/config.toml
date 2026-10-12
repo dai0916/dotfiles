@@ -1,0 +1,8 @@
+# mise のグローバル設定（~/.config/mise/config.toml にリンクする）
+# PJ ごとのバージョンは各リポジトリの mise.toml か .node-version で決める
+[tools]
+node = "24"      # Active LTS。Node 26 は 2026-10-28 に LTS に入るので、落ち着いたら上げる
+pnpm = "latest"
+
+[settings]
+idiomatic_version_file_enable_tools = ["node"]   # .node-version / .nvmrc も読む

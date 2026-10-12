@@ -1,0 +1,14 @@
+# 個人用の追加分（./bootstrap.sh personal）
+
+cask "amical"              # ローカル音声入力
+cask "discord"
+cask "linear"
+cask "commander-one"
+cask "mos"                 # マウスのスクロール
+cask "elgato-stream-deck"
+cask "logi-options+"
+cask "codexbar"
+cask "vlc"
+
+mas "Amphetamine", id: 937984704
+mas "Xcode", id: 497799835  # 自作の macOS / iOS アプリのビルドに使う

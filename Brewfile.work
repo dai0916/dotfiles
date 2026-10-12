@@ -1,0 +1,19 @@
+# 仕事用の追加分（./bootstrap.sh work）
+# 旧 setup-work.sh から移したもの。Arc（開発終了）、Warp と Ghostty アプリ（cmux で代わる）、使っていないフォント6種は外した
+# 仕事用の端末で使っていないものがあれば削る
+
+brew "delta"
+brew "ffmpeg"
+brew "keeper-commander"
+brew "lazygit"
+brew "safe-rm"
+brew "wget"
+
+cask "aqua-voice"
+cask "cleanshot"
+cask "gcloud-cli"
+cask "google-japanese-ime"
+cask "keepingyouawake"
+cask "logitech-g-hub"
+cask "smoothcsv"
+cask "xmind"
