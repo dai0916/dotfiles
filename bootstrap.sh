@@ -61,4 +61,5 @@ echo "  1. gh auth login（アカウントごとに繰り返す）→ gh auth se
 echo "  2. claude を起動して /login、codex login"
 echo "  3. 1Password にサインインし、op signin"
 echo "  4. Karabiner-Elements・Raycast などに、システム設定でアクセシビリティを許可"
-echo "  5. setup-agents.sh が表示した Orca / Codex の手順"
+echo "  5. Raycast の Script Commands に ~/dotfiles/raycast/script-commands を登録"
+echo "  6. setup-agents.sh が表示した Orca / Codex の手順"
