@@ -134,38 +134,19 @@ for key ('j') bindkey -M vicmd ${key} history-substring-search-down
 unset key
 # }}} End configuration added by Zim install
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
-
 export LANG=ja_JP.UTF-8
 
-# nvm (replaced by fnm)
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+# Homebrew と mise の shims は .zprofile（ログインシェル）で読み込む。ここでは対話シェル用の設定だけ
+# mise: node / pnpm / go のバージョン管理。PJ の mise.toml / .node-version に従って切り替わる
+eval "$(mise activate zsh)"
 
-# fnm - fast Node.js version manager
-eval "$(fnm env --use-on-cd)"
-
-export PATH="$HOME/go/bin:$PATH"
-
-# Added for node
-export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
-
-# direnv
+# direnv: PJ ごとの .envrc
 eval "$(direnv hook zsh)"
 
-# zoxide - smart cd
-eval "$(zoxide init zsh)"
-
-# fzf - fuzzy finder (Ctrl+R: history, Ctrl+T: files, Alt+C: cd)
-source <(fzf --zsh)
-
-# aliases - modern CLI replacements
-alias ls="eza --icons"
-alias ll="eza --icons -la"
-alias lt="eza --icons --tree --level=2"
-alias cat="bat --paging=never"
+# eza は --icons の直後の引数を値として読むので、= で値を付ける（付けないと ls <dir> がエラーになる）
+alias ls="eza --icons=auto"
+alias ll="eza --icons=auto -la"
+alias lt="eza --icons=auto --tree --level=2"
 
 # Starship prompt (must be at end)
 eval "$(starship init zsh)"
-export PATH="$HOME/.local/bin:$PATH"
