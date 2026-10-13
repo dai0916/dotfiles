@@ -94,7 +94,8 @@ Orca で issue ごとにワークツリーを開き、Claude Code と Codex を�
 
 1 issue = 1 ワークツリー = 1 ブランチ。
 
-1. 着手：Orca のタスク一覧から issue のワークツリーを開く（エージェントに issue が渡される）→ 計画の承認 → 実装・検証
+1. 着手：Orca のタスク一覧から issue のワークツリーを開く（エージェントに issue が渡される）か `/issue 番号`（`agent-skills/issue`）→ 計画の承認 → 実装・検証
+   - lifeos-harness プラグインを有効にした PJ では、`/issue` と `/done` はプラグインの同名スキルに処理を渡す
 2. 出荷：確認 OK なら同じワークツリーで `/done`（`agent-skills/done`）。commit 前の別系統レビュー → PJ の `AGENTS.md`「出荷手順」節 → issue を close → ブランチとワークツリーを削除
    - PR のマージを他の人が行う PJ では、`/done` は PR を出して止まる。マージ後にもう一度 `/done` で close と片付け（squash マージでも出荷済みと判定する）
    - 各 PJ の `AGENTS.md` に「出荷手順」節（確認 / 出荷 / 片付け）を書いておくと、`/done` がそのとおりに進める
@@ -128,3 +129,4 @@ Orca で issue ごとにワークツリーを開き、Claude Code と Codex を�
 | スクリプト | 内容 |
 |---|---|
 | restart-stream-deck.sh | Stream Deck を再起動し、開いたウィンドウを閉じる |
+| restart-logi-options.sh | Logi Options+ のデバイス管理（com.logi.cp-dev-mgr）を再起動する |
