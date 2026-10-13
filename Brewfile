@@ -24,6 +24,7 @@ cask "1password"
 cask "1password-cli"
 cask "raycast"
 cask "karabiner-elements"
+cask "google-japanese-ime"   # 入力ソースへの追加は手作業（README の手作業の手順）
 cask "orbstack"            # Docker 互換。使うときだけ起動する
 
 # Orca（AI エージェントのワークツリー管理）。公式の orca は別のアプリなので tap から入れる。
