@@ -39,6 +39,7 @@ op signin            # 1Password CLI
 
 - Karabiner-Elements・Raycast・Mos などに、システム設定 → プライバシーとセキュリティ → アクセシビリティで許可を出す
 - Raycast の Settings → Extensions → Script Commands → Add Directories で `~/dotfiles/raycast/script-commands` を登録する
+- システム設定 → キーボード → 入力ソースで Google 日本語入力（ひらがな・英数）を追加し、標準の日本語を外す
 - 仕事用: `gcloud auth login`
 
 ## 構成
