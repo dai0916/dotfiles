@@ -11,4 +11,5 @@ cask "codexbar"
 cask "vlc"
 
 mas "Amphetamine", id: 937984704
-mas "Xcode", id: 497799835  # 自作の macOS / iOS アプリのビルドに使う
+# Xcode は必要になったら入れる（約 4GB）: mas install 497799835
+# GestureKeys など Swift Package のビルドは Command Line Tools だけで足りる
