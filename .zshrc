@@ -114,6 +114,8 @@ if [[ ${functions[_start_application_mode]-} == *__orca_deferred_line_init* ]]; 
   functions[_start_application_mode]='(( ${+functions[__orca_deferred_line_init]} )) && __orca_deferred_line_init "$@"
 echoti smkx'
 fi
+# Claude Code のシェルでは既存ファイルへの上書き禁止を外す（zim の environment モジュールが有効にする）
+[[ -n "$CLAUDECODE" ]] && setopt clobber
 # }}} End configuration added by Zim Framework install
 
 

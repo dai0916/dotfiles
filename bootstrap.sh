@@ -44,7 +44,12 @@ mise install
 uv python install --default   # ~/.local/bin に python3 を置く（macOS 標準の 3.9 より優先される）
 
 echo "==> Claude Code / Codex の設定"
-./setup-agents.sh
+HARNESS_DIR="${AGENT_HARNESS_DIR:-$HOME/work/projects/agent-harness}"
+if [ -x "$HARNESS_DIR/setup-agents.sh" ]; then
+  "$HARNESS_DIR/setup-agents.sh"
+else
+  echo "  $HARNESS_DIR が無いので飛ばします（gh auth login の後に agent-harness を clone して setup-agents.sh を実行）"
+fi
 
 echo "==> macOS の設定"
 ./macos.sh
@@ -62,5 +67,5 @@ echo "  2. claude を起動して /login、codex login"
 echo "  3. 1Password にサインインし、op signin"
 echo "  4. Karabiner-Elements・Raycast などに、システム設定でアクセシビリティを許可"
 echo "  5. Raycast の Script Commands に ~/dotfiles/raycast/script-commands を登録"
-echo "  6. setup-agents.sh が表示した Orca / Codex の手順"
+echo "  6. agent-harness を clone して setup-agents.sh を実行し、表示された Orca / Codex の手順に従う"
 echo "  7. システム設定 → キーボード → 入力ソースで Google 日本語入力（ひらがな・英数）を追加し、標準の日本語を外す"
