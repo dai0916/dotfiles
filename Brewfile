@@ -17,7 +17,7 @@ brew "mas"
 # --- アプリ ---
 cask "google-chrome"
 cask "cmux"                # ターミナル。Ghostty の設定（~/.config/ghostty/config）を読む
-cask "claude"              # デスクトップ版。Claude Code CLI は setup-agents.sh がネイティブインストーラで入れる
+cask "claude"              # デスクトップ版。Claude Code CLI は agent-harness の setup-agents.sh がネイティブインストーラで入れる
 cask "chatgpt"
 cask "codex"               # Codex CLI。npm 版とは同時に入れない
 cask "1password"

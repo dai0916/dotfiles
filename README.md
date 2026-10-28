@@ -24,7 +24,7 @@ git clone https://github.com/dai0916/dotfiles.git ~/dotfiles
 2. `Brewfile`（共通）と `Brewfile.personal` / `Brewfile.work` を `brew bundle` する。1つ失敗しても残りは入れて、最後にまとめて報告する
 3. `link.sh`: 設定ファイルをホームにシンボリックリンクする（既存の実体は `.bak-<日時>` に退避）
 4. `mise install`（node 24 LTS / pnpm）と `uv python install --default`（python3）
-5. `setup-agents.sh`: Claude Code / Codex の設定（下の「AI エージェント」を参照）
+5. AI エージェントの設定（ハーネス用のリポジトリが手元にあれば、その `setup-agents.sh`。下の「AI エージェント」を参照）
 6. `macos.sh`: Dock・Finder・スクロールなどの設定
 
 App Store のアプリ（`mas`）は、先に App Store にサインインしておかないと失敗する。
@@ -52,7 +52,6 @@ op signin            # 1Password CLI
 ├── Brewfile.work           # 仕事用の追加分
 ├── link.sh                 # シンボリックリンク
 ├── macos.sh                # macOS のシステム設定
-├── setup-agents.sh         # Claude Code / Codex の設定を配置
 ├── .zshrc .zprofile .zimrc .bash_profile .vimrc
 ├── .config/
 │   ├── mise/config.toml    # グローバルの node / pnpm
@@ -61,9 +60,7 @@ op signin            # 1Password CLI
 │   ├── karabiner/karabiner.json
 │   ├── bettertouchtool/    # BetterTouchTool を手で入れた端末でだけリンク
 │   └── git/ignore
-├── raycast/script-commands/        # Raycast の Script Commands（Raycast にフォルダを登録して使う）
-├── .claude/ .codex/ agent-skills/   # AI エージェントの設定（下を参照）
-└── NOTICE                  # 第三者のソフトウェアの出典（japanese-guard）
+└── raycast/script-commands/        # Raycast の Script Commands（Raycast にフォルダを登録して使う）
 ```
 
 ## シェル
@@ -80,33 +77,16 @@ Zsh + [Zim](https://zimfw.sh/)（autosuggestions / syntax-highlighting / history
 
 ## AI エージェント（Claude Code / Codex / Orca）
 
-Orca で issue ごとにワークツリーを開き、Claude Code と Codex を併用する環境。
-`setup-agents.sh`（`bootstrap.sh` から呼ばれる。単体で何度実行してもよい）が次を行う：
+Claude Code と Codex の全体ルール・スキル・フック（ハーネス）は、別の非公開リポジトリ `agent-harness` で管理している。dotfiles には端末の設定だけを置く。
 
-- エージェント・フック・スキル・`AGENTS.md` を `~/.claude` / `~/.codex` にシンボリックリンクする（既存の実体は `.bak-<日時>` に退避）
-- `~/.claude/settings.json` に `settings.base.json` を足し込む。Orca やアプリが書き込むファイルなのでリンクにはしない。既存のキーとフックは残す
-- `~/.codex/config.toml` が無ければ `config.base.toml` から作る（あれば触らない）
-- `~/.codex/hooks.json` の Stop に `japanese-guard.py` を足す
+`bootstrap.sh` は `${AGENT_HARNESS_DIR:-~/work/projects/agent-harness}` に `setup-agents.sh` があれば実行する。無ければ飛ばすので、`gh auth login` の後に clone してから実行する：
 
-ここに入れているのはどの PJ でも使える設定だけ。PJ 固有のルールとフックは、各リポジトリの `.claude/settings.json` と `AGENTS.md` で配る。
+```bash
+gh repo clone <owner>/agent-harness ~/work/projects/agent-harness
+~/work/projects/agent-harness/setup-agents.sh
+```
 
-### issue の流れ
-
-1 issue = 1 ワークツリー = 1 ブランチ。
-
-1. 着手：Orca のタスク一覧から issue のワークツリーを開く（エージェントに issue が渡される）→ 計画の承認 → 実装・検証
-2. 出荷：確認 OK なら同じワークツリーで `/done`（`agent-skills/done`）。commit 前の別系統レビュー → PJ の `AGENTS.md`「出荷手順」節 → issue を close → ブランチとワークツリーを削除
-   - PR のマージを他の人が行う PJ では、`/done` は PR を出して止まる。マージ後にもう一度 `/done` で close と片付け（squash マージでも出荷済みと判定する）
-   - 各 PJ の `AGENTS.md` に「出荷手順」節（確認 / 出荷 / 片付け）を書いておくと、`/done` がそのとおりに進める
-承認なしで進める設定（Claude の `skipDangerousModePermissionPrompt`、Codex の `approval_policy = "never"`）と Codex の memories は既定で入れていない。環境の方針に合わせて手で有効にする。
-
-セットアップ後の手順：
-
-1. `claude` を起動して `/login`、`codex login`
-2. Claude Code で `/codex:setup` を実行し、Codex との連携を確かめる
-3. Codex を初めて起動したら、`japanese-guard.py` のフックを信頼する
-4. Orca でリポジトリを登録し、setup を `pnpm install` にして `wait-for-setup` を有効にする
-5. Orca から Claude と Codex を一度起動する（Orca が自分のフックを settings.json / hooks.json に書き込む）
+その後の手順は `agent-harness` の README に従う。
 
 ## ターミナル設定（cmux / Ghostty 共通の `~/.config/ghostty/config`）
 
