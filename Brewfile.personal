@@ -1,6 +1,5 @@
 # 個人用の追加分（./bootstrap.sh personal）
 
-cask "amical"              # ローカル音声入力
 cask "discord"
 cask "linear"
 cask "commander-one"
@@ -11,5 +10,6 @@ cask "codexbar"
 cask "vlc"
 
 mas "Amphetamine", id: 937984704
+mas "Kindle", id: 302584613
 # Xcode は必要になったら入れる（約 4GB）: mas install 497799835
 # GestureKeys など Swift Package のビルドは Command Line Tools だけで足りる
