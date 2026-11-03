@@ -30,7 +30,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 brew tap stablyai/orca
 brew trust --cask stablyai/orca/orca
 
-echo "==> brew bundle（Brewfile + Brewfile.$PROFILE）"
+echo "==> brew bundle（Brewfile + Brewfile.${PROFILE}）"
 # 1つ失敗しても残りは入れ、最後にまとめて報告する
 failed=()
 brew bundle --file=Brewfile || failed+=("Brewfile")
