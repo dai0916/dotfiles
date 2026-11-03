@@ -107,6 +107,9 @@ if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZIM_CONFIG_FILE:-${ZDOTDIR:-${HOME}}/.zimrc} 
 fi
 # Initialize modules.
 source ${ZIM_HOME}/init.zsh
+# Zim の environment モジュールが NO_CLOBBER にするので、>> で新しいファイルを作れなくなる。
+# cmux の履歴（~/Library/Application Support/cmux/terminal-history）が書けず、プロンプトのたびにエラーが出るため、>> だけ作成を許す（> の上書き防止はそのまま）
+setopt APPEND_CREATE
 # Orca のターミナルでは、Zim input が zle-line-init を包む時点で Orca の一時ウィジェット
 # (__orca_deferred_line_init) を焼き込み、後で関数が消えて毎プロンプト command not found になる。
 # 関数が残っているときだけ呼ぶように差し替える
