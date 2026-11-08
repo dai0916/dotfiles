@@ -8,6 +8,7 @@ cask "elgato-stream-deck"
 cask "logi-options+"
 cask "codexbar"
 cask "vlc"
+cask "tinycast"            # ランチャー（AI チャット・クリップボード）
 
 mas "Amphetamine", id: 937984704
 mas "Kindle", id: 302584613
