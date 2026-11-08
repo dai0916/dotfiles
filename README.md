@@ -7,7 +7,7 @@ macOS（Apple Silicon）の開発環境を、どの端末でも同じように�
 ## 方針
 
 - **最小構成**: 毎日使うものだけを入れる。たまに使うものは、必要になったときに `brew install` / `uvx` / `pnpm dlx` で入れる
-- **PJ の CLI は PJ に置く**: supabase・vercel・playwright・wrangler などは、各リポジトリの devDependencies に入れる（グローバルには入れない）
+- **PJ の CLI は PJ に置く**: playwright・wrangler などは、各リポジトリの devDependencies に入れる（グローバルには入れない）
 - **ランタイムは mise と uv**: node / pnpm は mise、python は uv で管理する。brew の node・fnm は使わない
 
 ## セットアップ
