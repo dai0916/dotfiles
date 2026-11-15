@@ -1,5 +1,7 @@
 name = "routine"
 description = "方針が決まっている定型作業に使う。ドキュメントの更新、ログや実行結果の集計、機械的な置換、Issueの起票文の作成など。判断を伴う設計変更には使わない。"
+model = "gpt-6-luna"
+model_reasoning_effort = "high"
 developer_instructions = """
 方針が決まっている作業を、正確に片付けることを担当する。
 

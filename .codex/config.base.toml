@@ -13,7 +13,6 @@ writable_roots = ["__HOME__/work", "__HOME__/orca"]
 network_access = true
 
 [features]
-multi_agent = true
 # 会話から自動で記録を残す。会社のデータの扱いで問題なければ true にする
 memories = false
 

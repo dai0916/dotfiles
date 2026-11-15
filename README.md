@@ -88,6 +88,11 @@ Orca で issue ごとにワークツリーを開き、Claude Code と Codex を�
 - `~/.codex/config.toml` が無ければ `config.base.toml` から作る（あれば触らない）
 - `~/.codex/hooks.json` の Stop に `japanese-guard.py` を足す
 
+モデルと effort の既定（理由は mgpj の decisions/0003）：
+
+- Claude：メインは Opus 5.5 / medium。Fable 5.2 は難しい仕事でだけ `/model fable` で使い、effort は `modelSettings` で high にする（Claude Code の既定は medium のため）。組み込みの Explore は `.claude/agents/explore.md` が置き換えて Haiku 5.5 で動く
+- Codex：メインは `gpt-6.1-sol` / medium。サブエージェントの `routine` は `gpt-6-luna` / high、`investigator` は `gpt-6.1-sol` / high
+
 ここに入れているのはどの PJ でも使える設定だけ。PJ 固有のルールとフックは、各リポジトリの `.claude/settings.json` と `AGENTS.md` で配る。
 
 ### issue の流れ
