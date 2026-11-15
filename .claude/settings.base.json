@@ -20,7 +20,7 @@
   },
   "enabledPlugins": {
     "codex@openai-codex": true,
-    "browser-use@claude-plugins-official": true
+    "browser-use@claude-plugins-official": false
   },
   "hooks": {
     "Stop": [
@@ -34,5 +34,13 @@
         ]
       }
     ]
+  },
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "medium"
+    },
+    "claude-fable-5-2": {
+      "effortLevel": "high"
+    }
   }
 }

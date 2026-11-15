@@ -1,5 +1,7 @@
 name = "investigator"
 description = "原因が特定できない不具合、挙動の変化、設計上のトレードオフの調査に使う。コードは変更せず、事実と根拠だけを返す。「なぜ動かないのか分からない」「どちらの方式が良いか根拠がほしい」ときに指名する。"
+model = "gpt-6.1-sol"
+model_reasoning_effort = "high"
 developer_instructions = """
 原因調査と判断材料の収集を担当する。**コードやファイルは変更しない。**
 
