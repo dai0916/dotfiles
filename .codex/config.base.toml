@@ -1,6 +1,6 @@
 # Codex のグローバル設定のひな形。setup-agents.sh が ~/.codex/config.toml の無いときだけ書き出す（__HOME__ は $HOME に置き換える）。
 # 書き出したあとは Codex / ChatGPT.app / Orca が追記するので、このファイルとリンクはしない。
-model = "gpt-6.1-sol"
+model = "gpt-6.2-sol"
 model_reasoning_effort = "medium"
 
 # 確認なしで進めたいなら approval_policy = "never" にする（会社のセキュリティ方針を確かめてから）
