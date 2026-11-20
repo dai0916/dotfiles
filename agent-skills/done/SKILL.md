@@ -10,7 +10,7 @@ Orca で issue から開いたワークツリー（1 issue = 1 ワークツリ�
 
 引数: `$ARGUMENTS`（issue 番号。省略可）
 
-Claude Code で、この PJ の `.claude/settings.json` の `enabledPlugins` に `lifeos-harness@lifeos` があるなら、Skill ツールで **`lifeos-harness:done`** を引数 `$ARGUMENTS` で呼び、その手順だけに従う（以下は読まない）。
+Claude Code で、この PJ の `.claude/settings.json` の `enabledPlugins` に `harness@dai0916-hobby` があるなら、Skill ツールで **`harness:done`** を引数 `$ARGUMENTS` で呼び、その手順だけに従う（以下は読まない）。
 
 スクリプトの場所（以下 `$S`）: この SKILL.md と同じディレクトリの `scripts`（`~/.claude/skills/done/scripts` または `~/.codex/skills/done/scripts`）。
 
