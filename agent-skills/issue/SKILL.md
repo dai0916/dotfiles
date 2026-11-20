@@ -7,7 +7,7 @@ description: GitHub Issue を読み込み、設計方針の承認 → 設計書�
 
 引数: `$ARGUMENTS`（issue 番号）
 
-Claude Code で、この PJ の `.claude/settings.json` の `enabledPlugins` に `lifeos-harness@lifeos` があるなら、Skill ツールで **`lifeos-harness:issue`** を引数 `$ARGUMENTS` で呼び、その手順だけに従う（以下は読まない）。
+Claude Code で、この PJ の `.claude/settings.json` の `enabledPlugins` に `harness@dai0916-hobby` があるなら、Skill ツールで **`harness:issue`** を引数 `$ARGUMENTS` で呼び、その手順だけに従う（以下は読まない）。
 
 それ以外の PJ では、引数で指定された GitHub Issue を、設計書主導ワークフロー（AGENTS.md）に従って対応する。
 
