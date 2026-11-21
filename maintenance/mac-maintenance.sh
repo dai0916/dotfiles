@@ -9,7 +9,7 @@
 # それは Orca の点検（mgpj の disk-check スキル）が調べ、ユーザーの承認を取ってから消す。
 # ログ: ~/Library/Logs/mac-maintenance/maintenance.log
 set -u
-PATH="/Applications/Orca.app/Contents/Resources/bin:/opt/homebrew/bin:$HOME/.local/bin:$HOME/.local/share/mise/shims:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+PATH="/Applications/Orca.app/Contents/Resources/bin:$HOME/.orbstack/bin:/opt/homebrew/bin:$HOME/.local/bin:$HOME/.local/share/mise/shims:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 LOG_DIR="$HOME/Library/Logs/mac-maintenance"
 mkdir -p "$LOG_DIR"
 LOG="$LOG_DIR/maintenance.log"
@@ -19,19 +19,25 @@ AUTOMATION_NAME="${MAC_MAINT_AUTOMATION:-mgpj ディスク点検}"
 log() { printf '%s %s\n' "$(date '+%F %T')" "$*" >>"$LOG"; }
 free_gb() { df -g /System/Volumes/Data 2>/dev/null | awk 'NR == 2 { print $4 }'; }
 notify() { osascript -e "display notification \"$1\" with title \"Mac のディスク\"" >/dev/null 2>&1 || true; }
-run() {
+run() { # 失敗しても止めずに記録し、終了コードを返す
+  local rc=0
   log "実行: $*"
-  "$@" >>"$LOG" 2>&1 || log "失敗（exit $?）: $*"
+  "$@" >>"$LOG" 2>&1 || rc=$?
+  [ "$rc" -eq 0 ] || log "失敗（exit ${rc}）: $*"
+  return "$rc"
 }
 
 monthly() {
   local before after
   before=$(free_gb)
-  if command -v brew >/dev/null 2>&1; then run brew cleanup; fi
-  if command -v pnpm >/dev/null 2>&1; then run pnpm store prune; fi
-  if command -v uv >/dev/null 2>&1; then run uv cache prune; fi
-  # OrbStack が動いているときだけ（止まっているのに起こさない）
-  if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then run docker system prune -f; fi
+  if command -v brew >/dev/null 2>&1; then run brew cleanup || true; fi
+  if command -v pnpm >/dev/null 2>&1; then run pnpm store prune || true; fi
+  if command -v uv >/dev/null 2>&1; then run uv cache prune || true; fi
+  # OrbStack が動いているときだけ、その手元のデーモンに限って掃除する（止まっているのに起こさない。
+  # docker の既定のコンテキストがリモートや別のエンジンを向いていても、そちらは消さない）
+  if command -v orbctl >/dev/null 2>&1 && [ "$(orbctl status 2>/dev/null)" = "Running" ] && command -v docker >/dev/null 2>&1; then
+    run docker --context orbstack system prune -f || true
+  fi
   after=$(free_gb)
   log "月次の掃除が終わった: 空き ${before:-?}GB → ${after:-?}GB"
 }
@@ -54,7 +60,6 @@ check() {
     log "点検: 空き ${free}GB。今日はもう起動した"
     return 0
   fi
-  echo "$today" >"$stamp"
   notify "空きが ${free}GB です（閾値 ${THRESHOLD_GB}GB）。Claude が原因を調べます"
   if ! command -v orca >/dev/null 2>&1; then
     log "点検: 空き ${free}GB。orca が無いので通知だけ"
@@ -63,11 +68,17 @@ check() {
   id=$(orca automations list --json 2>/dev/null |
     jq -r --arg n "$AUTOMATION_NAME" '(.result.automations // .result // [])[]? | select(.name == $n) | .id' | head -n 1)
   if [ -z "$id" ]; then
-    log "点検: 空き ${free}GB。オートメーション「$AUTOMATION_NAME」が無いので通知だけ"
+    log "点検: 空き ${free}GB。オートメーション「${AUTOMATION_NAME}」が無いので通知だけ"
     return 0
   fi
-  run orca automations run "$id"
-  log "点検: 空き ${free}GB。オートメーション「$AUTOMATION_NAME」（$id）を起動した"
+  # 起動を受け付けたときだけ「今日は起動した」と記録する（失敗したら次の実行でやり直せるように）
+  if run orca automations run "$id"; then
+    echo "$today" >"$stamp"
+    log "点検: 空き ${free}GB。オートメーション「${AUTOMATION_NAME}」（${id}）を起動した"
+  else
+    log "点検: 空き ${free}GB。オートメーション「${AUTOMATION_NAME}」の起動に失敗した（次の実行でやり直す）"
+    return 1
+  fi
 }
 
 case "${1:-}" in
