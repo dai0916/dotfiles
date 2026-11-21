@@ -32,10 +32,20 @@ write_plist() { # label mode calendar-dict
 </dict>
 </plist>
 EOF
+  echo "書いた: ${path}"
+}
+
+load_plist() { # label（GUI のログインセッションが無いときは失敗するので、次のログイン後に install.sh を実行し直す）
+  local path="$AGENTS/$1.plist"
   launchctl bootout "gui/$(id -u)" "$path" >/dev/null 2>&1 || true
-  launchctl bootstrap "gui/$(id -u)" "$path"
-  echo "登録した: ${label}"
+  if launchctl bootstrap "gui/$(id -u)" "$path"; then echo "登録した: $1"; else echo "登録できなかった: $1（ログインしてから ./maintenance/install.sh を実行し直す）" >&2; return 1; fi
 }
 
 write_plist local.mac-maintenance.monthly monthly '<dict><key>Day</key><integer>1</integer><key>Hour</key><integer>10</integer><key>Minute</key><integer>0</integer></dict>'
 write_plist local.mac-maintenance.check check '<dict><key>Hour</key><integer>9</integer><key>Minute</key><integer>30</integer></dict>'
+
+# 両方を書いてから登録する（片方の登録に失敗しても、もう片方を残す）
+rc=0
+load_plist local.mac-maintenance.monthly || rc=1
+load_plist local.mac-maintenance.check || rc=1
+exit "$rc"

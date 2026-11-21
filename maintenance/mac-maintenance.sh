@@ -35,15 +35,16 @@ monthly() {
   if command -v uv >/dev/null 2>&1; then run uv cache prune || true; fi
   # OrbStack が動いているときだけ、その手元のデーモンに限って掃除する（止まっているのに起こさない。
   # docker の既定のコンテキストがリモートや別のエンジンを向いていても、そちらは消さない）
-  if command -v orbctl >/dev/null 2>&1 && [ "$(orbctl status 2>/dev/null)" = "Running" ] && command -v docker >/dev/null 2>&1; then
-    run docker --context orbstack system prune -f || true
+  local sock="$HOME/.orbstack/run/docker.sock"
+  if command -v orbctl >/dev/null 2>&1 && [ "$(orbctl status 2>/dev/null)" = "Running" ] && [ -S "$sock" ] && command -v docker >/dev/null 2>&1; then
+    run env DOCKER_HOST="unix://${sock}" DOCKER_CONTEXT= docker system prune -f || true
   fi
   after=$(free_gb)
   log "月次の掃除が終わった: 空き ${before:-?}GB → ${after:-?}GB"
 }
 
 check() {
-  local free today stamp id
+  local free today stamp id lock
   free=$(free_gb)
   if [ -z "$free" ]; then
     log "点検: 空きが取れなかった"
@@ -53,6 +54,13 @@ check() {
     log "点検: 空き ${free}GB（閾値 ${THRESHOLD_GB}GB 以上）"
     return 0
   fi
+  # 同時に 2 回走っても二重に起動しないよう、記録の読み書きと起動をロックで囲む
+  lock="$LOG_DIR/check.lock"
+  if ! mkdir "$lock" 2>/dev/null; then
+    log "点検: 別の点検が実行中なので飛ばす"
+    return 0
+  fi
+  trap 'rmdir "$lock" 2>/dev/null' RETURN
   # 起動は 1 日 1 回まで（空きが少ないあいだ毎日起こさないように、同じ日の 2 回目は飛ばす）
   today=$(date +%F)
   stamp="$LOG_DIR/last-trigger"
@@ -60,22 +68,23 @@ check() {
     log "点検: 空き ${free}GB。今日はもう起動した"
     return 0
   fi
-  notify "空きが ${free}GB です（閾値 ${THRESHOLD_GB}GB）。Claude が原因を調べます"
-  if ! command -v orca >/dev/null 2>&1; then
-    log "点検: 空き ${free}GB。orca が無いので通知だけ"
-    return 0
+  id=""
+  if command -v orca >/dev/null 2>&1; then
+    id=$(orca automations list --json 2>/dev/null |
+      jq -r --arg n "$AUTOMATION_NAME" '(.result.automations // .result // [])[]? | select(.name == $n) | .id' | head -n 1)
   fi
-  id=$(orca automations list --json 2>/dev/null |
-    jq -r --arg n "$AUTOMATION_NAME" '(.result.automations // .result // [])[]? | select(.name == $n) | .id' | head -n 1)
   if [ -z "$id" ]; then
+    notify "空きが ${free}GB です（閾値 ${THRESHOLD_GB}GB）。点検のオートメーションが無いので、手で確かめてください"
     log "点検: 空き ${free}GB。オートメーション「${AUTOMATION_NAME}」が無いので通知だけ"
     return 0
   fi
-  # 起動を受け付けたときだけ「今日は起動した」と記録する（失敗したら次の実行でやり直せるように）
+  # 起動を受け付けたときだけ「今日は起動した」と記録し、「Claude が調べる」と知らせる（失敗したら次の実行でやり直す）
   if run orca automations run "$id"; then
     echo "$today" >"$stamp"
+    notify "空きが ${free}GB です（閾値 ${THRESHOLD_GB}GB）。Claude が原因を調べます"
     log "点検: 空き ${free}GB。オートメーション「${AUTOMATION_NAME}」（${id}）を起動した"
   else
+    notify "空きが ${free}GB です（閾値 ${THRESHOLD_GB}GB）。点検を起動できなかったので、手で確かめてください"
     log "点検: 空き ${free}GB。オートメーション「${AUTOMATION_NAME}」の起動に失敗した（次の実行でやり直す）"
     return 1
   fi
