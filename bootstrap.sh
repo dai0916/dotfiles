@@ -49,6 +49,9 @@ echo "==> Claude Code / Codex の設定"
 echo "==> macOS の設定"
 ./macos.sh
 
+echo "==> ディスクの定期メンテナンス（launchd）"
+./maintenance/install.sh || failed+=("maintenance/install.sh")
+
 echo ""
 if [ ${#failed[@]} -gt 0 ]; then
   echo "!! 一部インストールに失敗しました: ${failed[*]}"

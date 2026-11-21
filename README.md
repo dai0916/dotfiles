@@ -121,6 +121,19 @@ Orca で issue ごとにワークツリーを開き、Claude Code と Codex を�
 - 背景透過: 50%
 - タイトルバー非表示
 
+## ディスクの定期メンテナンス（`maintenance/`）
+
+256GB の Mac で容量を保つための仕組み。`bootstrap.sh` が `maintenance/install.sh` で launchd に登録する（手で登録し直すときも `./maintenance/install.sh`）。
+
+| 時刻 | 処理 | 中身 |
+|---|---|---|
+| 毎月 1 日 10:00 | `mac-maintenance.sh monthly` | `brew cleanup`・`pnpm store prune`・`uv cache prune`・OrbStack が動いていれば `docker system prune -f` |
+| 毎日 9:30 | `mac-maintenance.sh check` | 空きが 30GB（`MAC_MAINT_THRESHOLD_GB`）を切ったら通知し、Orca のオートメーション「mgpj ディスク点検」を起動する（1 日 1 回まで） |
+
+- 消してよいか迷うもの（ワークツリーの残り・古い node_modules・大きな成果物など）はここでは消さない。mgpj の `disk-check` スキル（Orca のオートメーション、毎月 1 回と上の起動時）が調べ、確認ボードでユーザーの承認を取ってから消す
+- ログ：`~/Library/Logs/mac-maintenance/maintenance.log`
+- スリープ中で時刻を過ぎた分は、起きたときに launchd が 1 回だけ実行する
+
 ## Karabiner-Elements
 
 | ルール | 内容 |
